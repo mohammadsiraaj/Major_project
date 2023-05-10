@@ -1,6 +1,6 @@
 import sys
 import os
-from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog, QComboBox
+from PySide6.QtWidgets import QApplication, QMainWindow, QFileDialog
 import recognize
 from gui import Ui_Dialog
 
@@ -28,7 +28,10 @@ class App(QMainWindow):
 
 
     def browsefiles(self): #select input-file   
-        self.path = QFileDialog.getOpenFileName(self, 'Open file', dir="С:\\", filter='Images&Videos (*.jpg *.png *.avi *.mp4)')
+        self.path = QFileDialog.getOpenFileName(self,
+                                                'Open file', 
+                                                dir="C:\\",
+                                                filter='Images&Videos (*.jpg *.png *.avi *.mp4)')
         self.ui.filename.setText(self.path[0])
         
     def recog(self): #starting recognition
@@ -41,10 +44,14 @@ class App(QMainWindow):
         else:
             print("error_path")
         if format in video_formats: #video recognition
-            recognize.recognize(vid_path=f"{self.path[0]}",vid_out=f"{self.path[0][:-4]}_out.{format}", acc=float(self.acc))
+            recognize.recognize(vid_path=f"{self.path[0]}",
+                                vid_out=f"{self.path[0][:-4]}_out.{format}",
+                                acc=float(self.acc))
             os.system(f"{self.path[0][:-4]}_out.{format}") 
         elif format in image_formats: #image recognition
-            recognize.recognize(img_path=f"{self.path[0]}",img_out=f"{self.path[0][:-4]}_out.{format}", acc=float(self.acc))
+            recognize.recognize(img_path=f"{self.path[0]}",
+                                img_out=f"{self.path[0][:-4]}_out.{format}",
+                                acc=float(self.acc))
             os.system(f"{self.path[0][:-4]}_out.{format}")
         else:
             print("error_file")
@@ -57,3 +64,5 @@ if __name__ == "__main__":
     window = App()
     window.show() 
     sys.exit(app.exec())
+
+    

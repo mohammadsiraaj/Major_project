@@ -5,7 +5,7 @@ def detecting (frame, model):
     frame = [frame]
     print(f"Detecting . . .")
     res = model(frame)
-    print(res.xyxyn)
+    print(res.xyxyn)  # (top left coordinates,bottom right,confidence,class label)
     labels, cords = res.xyxyn[0][:, -1], res.xyxyn[0][:, :-1]
     return labels, cords
 
@@ -21,32 +21,38 @@ def color_box(results, frame, classes, acc=0.45,cam=False):
         if cords_list[4] >= acc: #Accuracy Comparison
             print(f"Creating color box . . .")
             if cam:
-                winsound.Beep(1000,1000)
+                winsound.Beep(1000,1000) # Beep sound during detection
             x1 = int(cords_list[0]*x_window)
             y1 = int(cords_list[1]*y_window)
             x2 = int(cords_list[2]*x_window)
             y2 = int(cords_list[3]*y_window)
             text_d = classes[int(labels[i])]
             color = (0, 0, 0)
-            if text_d == "pistol":
-                color = (255, 0, 0)
-            elif text_d == "machine_gun":
-                color = (255, 0, 0)
+            if text_d == "handgun":
+                print("handgun")
+                color = (0, 0, 255)
+            elif text_d == "rifle":
+                print("rifle")
+                color = (0, 0, 255)
             else:
-                color = (85, 0, 0)
+                print("nothing")
+                color = (0, 0, 0)
             cv2.rectangle(frame, (x1, y1), (x2, y2), color, 2) #object box
             cv2.rectangle(frame, (x1, y1-20), (x2, y1), color, -1) #text box
-            cv2.putText(frame, text_d + f" {round(float(cords_list[4]),2)}", (x1, y1), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (255,255,255), 2) #text adding
+            cv2.putText(frame, text_d + f" {round(float(cords_list[4]),2)}", 
+                        (x1, y1),
+                        cv2.FONT_HERSHEY_SIMPLEX,
+                        0.7, (255,255,255), 2) #(frame,text,pos,style,size,color,thickness)
 
     return frame
-def runCam(acc=0.45):
+def runCam(acc=0.45): #Recognition in WebCam
     print(f"Downloading model . . .")
     #Custom model = 'best.pt'
     model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
     classes = model.names
     cap = cv2.VideoCapture(0)
     frame_number = 1
-
+    
     while True:
         ret, frame = cap.read()
         if ret:
@@ -66,8 +72,8 @@ def recognize(img_path=None, img_out=None, vid_path=None, vid_out=None, acc=0.45
     #Custom model = 'best.pt'
     model = torch.hub.load('ultralytics/yolov5', 'custom', path='best.pt', force_reload=True)
     classes = model.names 
-
-    if img_path != None:
+    print(classes)
+    if img_path != None: # Image Recognition
         print(f"Your image: {img_path}")
         frame = cv2.imread(img_path)
         frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
@@ -79,7 +85,7 @@ def recognize(img_path=None, img_out=None, vid_path=None, vid_out=None, acc=0.45
         cv2.imwrite(f"{img_out}", frame) #save output image
 
 
-    elif vid_path !=None:
+    elif vid_path !=None: #Recognition in Videos
         print(f"Your video: {vid_path}")
         cap = cv2.VideoCapture(vid_path)
 

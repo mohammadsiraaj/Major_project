@@ -1,12 +1,10 @@
-from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
-    QMetaObject, QObject, QPoint, QRect,
-    QSize, QTime, QUrl, Qt)
-from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
-    QFont, QFontDatabase, QGradient, QIcon,
-    QImage, QKeySequence, QLinearGradient, QPainter,
-    QPalette, QPixmap, QRadialGradient, QTransform)
-from PySide6.QtWidgets import (QApplication, QComboBox, QDialog, QGridLayout,
-    QLabel, QLineEdit, QPushButton, QSizePolicy,
+from PySide6.QtCore import (QCoreApplication,
+    QMetaObject, QRect
+    , Qt)
+from PySide6.QtGui import (
+    QFont)
+from PySide6.QtWidgets import (QComboBox, QGridLayout,
+    QLabel, QLineEdit, QPushButton,
     QWidget)
 
 class Ui_Dialog(object):
@@ -90,4 +88,3 @@ class Ui_Dialog(object):
         self.cam.setText(QCoreApplication.translate("Dialog", u"Webcam", None))
         self.label_2.setText(QCoreApplication.translate("Dialog", u"Accuracy", None))
     # retranslateUi
-
